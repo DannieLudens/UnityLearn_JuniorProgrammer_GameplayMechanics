@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private GameObject _focalPoint;
     private float _forwardInput;
     private float _powerUpStregth = 15f;
+    private Coroutine _powerUpRoutine;
 
     void Awake()
     {
@@ -31,7 +32,6 @@ public class PlayerController : MonoBehaviour
     {
         _forwardInput = _controls.Player.Move.ReadValue<Vector2>().y;
         powerUpIndicator.transform.position = transform.position + new Vector3(0, -0.5f, 0);
-
     }
 
     private void FixedUpdate()
@@ -46,7 +46,11 @@ public class PlayerController : MonoBehaviour
             hasPoweredUp = true;
             powerUpIndicator.gameObject.SetActive(true);
             Destroy(other.gameObject);
-            StartCoroutine(PowerUpCountdownRoutine());
+            if (_powerUpRoutine != null)
+            {
+                StopCoroutine(_powerUpRoutine);
+            }
+            _powerUpRoutine = StartCoroutine(PowerUpCountdownRoutine());
         }
     }
 
@@ -62,7 +66,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy") && hasPoweredUp)
         {
             Rigidbody enemyRb = collision.gameObject.GetComponent<Rigidbody>();
-            Vector3 awayFromPlayer = collision.gameObject.transform.position - transform.position;
+            Vector3 awayFromPlayer = collision.gameObject.transform.position - transform.position. normalized;
 
             Debug.Log("Collided with: " + collision.gameObject.name + " with powerup set to " + hasPoweredUp);
 
