@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float playerSpeed = 150f;
+    [SerializeField] private float playerSpeed = 5f;
 
     private InputSystem_Actions _controls;
     private Rigidbody _playerRb;
     private GameObject _focalPoint;
+    private float _forwardInput;
+
     void Awake()
     {
         _controls = new InputSystem_Actions();
@@ -21,8 +23,22 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Vector2 moveInput = _controls.Player.Move.ReadValue<Vector2>();
-        float forwardInput = moveInput.y;
-        _playerRb.AddForce(_focalPoint.transform.forward * (forwardInput * playerSpeed * Time.deltaTime));
+        _forwardInput = _controls.Player.Move.ReadValue<Vector2>().y;
+
+    }
+
+    private void FixedUpdate()
+    {
+        _playerRb.AddForce(_focalPoint.transform.forward * (_forwardInput * playerSpeed));
+    }
+
+    private void OnDisable()
+    {
+        _controls.Player.Disable();
+    }
+
+    private void OnDestroy()
+    {
+        _controls.Dispose();
     }
 }
