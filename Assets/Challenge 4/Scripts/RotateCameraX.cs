@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class RotateCameraX : MonoBehaviour
 {
@@ -27,5 +25,15 @@ public class RotateCameraX : MonoBehaviour
 
         transform.position = player.transform.position; // Move focal point with player
 
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Disable();
+    }
+
+    void OnDestroy()
+    {
+        controls.Dispose();
     }
 }
