@@ -1,76 +1,73 @@
 ﻿using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class SpawnManagerX : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    public GameObject powerupPrefab;
+    [SerializeField] private float enemyBaseSpeed = 3f;         // Enemy speed in wave 1
+    [SerializeField] private float speedIncreasePerWave = 0.5f; // Extra enemy speed added each new wave
 
-    private float spawnRangeX = 10;
-    private float spawnZMin = 15; // set min spawn Z
-    private float spawnZMax = 25; // set max spawn Z
-    private Rigidbody _playerRb;
+    public GameObject enemyPrefab;   // Enemy prefab (assigned in the Inspector)
+    public GameObject powerupPrefab; // Power-up prefab (assigned in the Inspector)
 
-    public int enemyCount;
-    public int waveCount = 1;
+    private float spawnRangeX = 10; // Max X distance from the center
+    private float spawnZMin = 15;   // Min spawn Z (enemy side of the field)
+    private float spawnZMax = 25;   // Max spawn Z
+    private Rigidbody _playerRb;    // Cached player Rigidbody (avoids repeated GetComponent)
 
+    public int enemyCount;    // Enemies currently in the scene
+    public int waveCount = 1; // Current wave; also how many enemies it spawns
 
-    public GameObject player;
+    public GameObject player; // Player reference (assigned in the Inspector)
 
+    // On start: cache the player's Rigidbody once
     private void Start()
     {
         _playerRb = player.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
+    // Every frame: starts a new wave when all enemies are gone
     void Update()
     {
-        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length; // Counts objects tagged "Enemy"
 
         if (enemyCount == 0)
         {
             SpawnEnemyWave(waveCount);
         }
-
     }
 
-    // Generate random spawn position for powerups and enemy balls
-    Vector3 GenerateSpawnPosition ()
+    // Returns a random position on the enemy side of the field
+    Vector3 GenerateSpawnPosition()
     {
         float xPos = Random.Range(-spawnRangeX, spawnRangeX);
         float zPos = Random.Range(spawnZMin, spawnZMax);
         return new Vector3(xPos, 0, zPos);
     }
 
-
+    // Spawns a power-up (if none left) and the given number of enemies, then resets the player
     void SpawnEnemyWave(int enemiesToSpawn)
     {
-        Vector3 powerupSpawnOffset = new Vector3(0, 0, -15); // make powerups spawn at player end
+        Vector3 powerupSpawnOffset = new Vector3(0, 0, -15); // Moves power-ups to the player's side
 
-        // If no powerups remain, spawn a powerup
-        if (GameObject.FindGameObjectsWithTag("PowerUp").Length == 0) // check that there are zero powerups
+        if (GameObject.FindGameObjectsWithTag("PowerUp").Length == 0) // Only spawn one if none remain
         {
             Instantiate(powerupPrefab, GenerateSpawnPosition() + powerupSpawnOffset, powerupPrefab.transform.rotation);
         }
 
-        // Spawn number of enemy balls based on wave number
-        for (int i = 0; i < enemiesToSpawn; i++)
+        for (int i = 0; i < enemiesToSpawn; i++) // One enemy per wave number
         {
-            Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation);
+            GameObject enemy = Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation); // Keep a reference to the new copy
+            enemy.GetComponent<EnemyX>().speed = enemyBaseSpeed + (waveCount - 1) * speedIncreasePerWave;       // Faster each wave (wave 1 = base speed)
         }
 
-        waveCount++;
-        ResetPlayerPosition(); // put player back at start
-
+        waveCount++;           // Runs after the loop, so the formula above uses (waveCount - 1)
+        ResetPlayerPosition(); // Puts the player back at the start
     }
 
-    // Move player back to position in front of own goal
-    void ResetPlayerPosition ()
+    // Moves the player in front of its own goal and stops all its motion
+    void ResetPlayerPosition()
     {
         player.transform.position = new Vector3(0, 1, -7);
-        _playerRb.linearVelocity = Vector3.zero;
-        _playerRb.angularVelocity = Vector3.zero;
-
+        _playerRb.linearVelocity = Vector3.zero;  // Stops movement
+        _playerRb.angularVelocity = Vector3.zero; // Stops rolling
     }
-
 }

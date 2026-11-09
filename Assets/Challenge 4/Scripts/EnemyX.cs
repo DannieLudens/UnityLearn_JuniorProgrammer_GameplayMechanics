@@ -2,31 +2,30 @@
 
 public class EnemyX : MonoBehaviour
 {
-    public float speed;
-    private Rigidbody enemyRb;
-    private GameObject playerGoal;
+    public float speed;            // Chase force (set per wave by SpawnManagerX)
+    private Rigidbody enemyRb;     // Enemy's Rigidbody
+    private GameObject playerGoal; // Target: the player's goal
 
-    // Start is called before the first frame update
+    // On start: cache the references it needs
     void Start()
     {
         enemyRb = GetComponent<Rigidbody>();
-        playerGoal = GameObject.FindGameObjectWithTag("Player Goal");
+        playerGoal = GameObject.FindGameObjectWithTag("Player Goal"); // Finds by tag (safer than by name)
     }
 
+    // Fixed physics step: pushes the enemy toward the player's goal
     private void FixedUpdate()
     {
-        // Set enemy direction towards player goal and move there
-        Vector3 lookDirection = (playerGoal.transform.position - transform.position).normalized;
-        enemyRb.AddForce(lookDirection * speed );
+        Vector3 lookDirection = (playerGoal.transform.position - transform.position).normalized; // (target - origin) = direction; normalized = length 1
+        enemyRb.AddForce(lookDirection * speed);                                                 // Continuous force, no deltaTime
     }
 
+    // Called on a physical collision: removes the enemy when it reaches either goal
     private void OnCollisionEnter(Collision other)
     {
-        // If enemy collides with either goal, destroy it
-        if (other.gameObject.CompareTag("Enemy Goal") || other.gameObject.CompareTag("Player Goal"))
+        if (other.gameObject.CompareTag("Enemy Goal") || other.gameObject.CompareTag("Player Goal")) // || = either one
         {
             Destroy(gameObject);
         }
     }
-
 }
