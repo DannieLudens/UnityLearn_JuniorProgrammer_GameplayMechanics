@@ -6,12 +6,13 @@ public class SpawnManager : MonoBehaviour
 {
     public GameObject enemyPrefab;  // Enemy prefab (assigned in the Inspector)
     public int enemyCount;            // Number of enemies currently in the scene
+    public int waveNumber = 1;           // Current wave number (starts at 1)
     private float _spawnRange = 9f; // Max distance from the center where enemies can spawn
 
     // On start: spawns one enemy at a random position
     void Start()
     {
-        SpawnEnemyWave(3);
+        SpawnEnemyWave(waveNumber);
     }
 
     private void Update()
@@ -19,7 +20,8 @@ public class SpawnManager : MonoBehaviour
         enemyCount = FindObjectsByType<Enemy>(FindObjectsSortMode.None).Length; // Counts all Enemy instances in the scene
         if (enemyCount == 0) // If all enemies are gone
         {
-            SpawnEnemyWave(1); // Spawn a new wave of 1 enemy
+            waveNumber++; // Increase the wave number
+            SpawnEnemyWave(waveNumber); // Spawn a new wave of 1 enemy
         }
     }
 
