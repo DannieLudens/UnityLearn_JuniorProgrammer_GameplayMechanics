@@ -9,7 +9,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _playerRb;
     private GameObject _focalPoint;
     private float _forwardInput;
+    private float _powerUpStregth = 15f;
+
     public bool _hasPoweredUp;
+
     void Awake()
     {
         _controls = new InputSystem_Actions();
@@ -46,7 +49,12 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && _hasPoweredUp)
         {
+            Rigidbody enemyRb = collision.gameObject.GetComponent<Rigidbody>();
+            Vector3 awayFromPlayer = collision.gameObject.transform.position - transform.position;
+
             Debug.Log("Collided with: " + collision.gameObject.name + " with powerup set to " + _hasPoweredUp);
+
+            enemyRb.AddForce(awayFromPlayer * _powerUpStregth, ForceMode.Impulse);
         }
     }
 
