@@ -1,0 +1,20 @@
+using UnityEngine;
+
+public class Enemy : MonoBehaviour
+{
+    [SerializeField] private float speed = 3f;
+    private Rigidbody _enemyRb;
+    private GameObject _player;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        _enemyRb = GetComponent<Rigidbody>();
+        _player = GameObject.Find("Player");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        _enemyRb.AddForce((_player.transform.position - transform.position).normalized * speed);
+    }
+}
