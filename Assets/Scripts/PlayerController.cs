@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _playerRb;
     private GameObject _focalPoint;
     private float _forwardInput;
-
+    public bool _hasPoweredUp;
     void Awake()
     {
         _controls = new InputSystem_Actions();
@@ -30,6 +30,15 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         _playerRb.AddForce(_focalPoint.transform.forward * (_forwardInput * playerSpeed));
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PowerUp"))
+        {
+            _hasPoweredUp = true;
+            Destroy(other.gameObject);
+        }
     }
 
     private void OnDisable()
