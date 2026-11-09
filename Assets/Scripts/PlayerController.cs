@@ -6,13 +6,14 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 5f;
 
+    public bool hasPoweredUp;
+    public GameObject powerUpIndicator;
+
     private InputSystem_Actions _controls;
     private Rigidbody _playerRb;
     private GameObject _focalPoint;
     private float _forwardInput;
     private float _powerUpStregth = 15f;
-
-    public bool hasPoweredUp;
 
     void Awake()
     {
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         _forwardInput = _controls.Player.Move.ReadValue<Vector2>().y;
+        powerUpIndicator.transform.position = transform.position + new Vector3(0, -0.5f, 0);
 
     }
 
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("PowerUp"))
         {
             hasPoweredUp = true;
+            powerUpIndicator.gameObject.SetActive(true);
             Destroy(other.gameObject);
             StartCoroutine(PowerUpCountdownRoutine());
         }
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(7);
         hasPoweredUp = false;
+        powerUpIndicator.gameObject.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)
