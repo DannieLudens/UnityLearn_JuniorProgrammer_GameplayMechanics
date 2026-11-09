@@ -2,15 +2,27 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float playerSpeed = 150f;
+
+    private InputSystem_Actions _controls;
+    private Rigidbody _playerRb;
+    private GameObject _focalPoint;
+    void Awake()
     {
-        
+        _controls = new InputSystem_Actions();
+        _playerRb = GetComponent<Rigidbody>();
+        _focalPoint = GameObject.Find("Focal Point");
     }
 
-    // Update is called once per frame
+    private void OnEnable()
+    {
+        _controls.Player.Enable();
+    }
+
     void Update()
     {
-        
+        Vector2 moveInput = _controls.Player.Move.ReadValue<Vector2>();
+        float forwardInput = moveInput.y;
+        _playerRb.AddForce(_focalPoint.transform.forward * (forwardInput * playerSpeed * Time.deltaTime));
     }
 }

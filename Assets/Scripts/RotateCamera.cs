@@ -21,7 +21,7 @@ public class RotateCamera : MonoBehaviour
     private void OnEnable()
     {
         _controls.Player.Enable();
-        Debug.Log(_controls.Player.Move);
+        // Debug.Log(_controls.Player.Move);
     }
 
     private void Update()
