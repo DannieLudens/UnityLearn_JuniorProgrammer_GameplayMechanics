@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -11,6 +12,14 @@ public class Enemy : MonoBehaviour
     {
         _enemyRb = GetComponent<Rigidbody>();
         _player = GameObject.Find("Player"); // Finds by name (prefabs can't store scene references)
+    }
+
+    private void Update()
+    {
+        if (transform.position.y < -10) // If the enemy falls off the island
+        {
+            Destroy(gameObject); // Remove it from the scene
+        }
     }
 
     // Fixed physics step: pushes the enemy toward the player
