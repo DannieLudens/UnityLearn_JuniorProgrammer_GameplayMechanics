@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private float _forwardInput;
     private float _powerUpStregth = 15f;
 
-    public bool _hasPoweredUp;
+    public bool hasPoweredUp;
 
     void Awake()
     {
@@ -40,19 +41,26 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("PowerUp"))
         {
-            _hasPoweredUp = true;
+            hasPoweredUp = true;
             Destroy(other.gameObject);
+            StartCoroutine(PowerUpCountdownRoutine());
         }
+    }
+
+    IEnumerator PowerUpCountdownRoutine()
+    {
+        yield return new WaitForSeconds(7);
+        hasPoweredUp = false;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && _hasPoweredUp)
+        if (collision.gameObject.CompareTag("Enemy") && hasPoweredUp)
         {
             Rigidbody enemyRb = collision.gameObject.GetComponent<Rigidbody>();
             Vector3 awayFromPlayer = collision.gameObject.transform.position - transform.position;
 
-            Debug.Log("Collided with: " + collision.gameObject.name + " with powerup set to " + _hasPoweredUp);
+            Debug.Log("Collided with: " + collision.gameObject.name + " with powerup set to " + hasPoweredUp);
 
             enemyRb.AddForce(awayFromPlayer * _powerUpStregth, ForceMode.Impulse);
         }
