@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -38,6 +39,14 @@ public class PlayerController : MonoBehaviour
         {
             _hasPoweredUp = true;
             Destroy(other.gameObject);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && _hasPoweredUp)
+        {
+            Debug.Log("Collided with: " + collision.gameObject.name + " with powerup set to " + _hasPoweredUp);
         }
     }
 
