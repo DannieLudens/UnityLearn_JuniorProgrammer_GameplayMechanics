@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -14,11 +13,12 @@ public class Enemy : MonoBehaviour
         _player = GameObject.Find("Player"); // Finds by name (prefabs can't store scene references)
     }
 
+    // Every frame: removes the enemy if it fell off the island (position check, not physics)
     private void Update()
     {
-        if (transform.position.y < -10) // If the enemy falls off the island
+        if (transform.position.y < -10) // Fell below the island
         {
-            Destroy(gameObject); // Remove it from the scene
+            Destroy(gameObject); // gameObject = this object (lowercase); removed at the end of the frame
         }
     }
 

@@ -229,7 +229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 706c21e9ff058cc46b9a8c0d72d262d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
+  powerupPrefab: {fileID: 8250742949734792886, guid: f5127a993dd570849b11a30621318132, type: 3}
   enemyPrefab: {fileID: 7037012977774878935, guid: 368e5d6f0ddf6c24a96f6e9db8ebe180, type: 3}
+  enemyCount: 0
+  waveNumber: 1
 --- !u!4 &516970655
 Transform:
   m_ObjectHideFlags: 0
