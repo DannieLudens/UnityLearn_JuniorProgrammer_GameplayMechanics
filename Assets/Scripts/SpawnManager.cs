@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
     // On start: spawns one enemy at a random position
     void Start()
     {
-        Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation); // Creates a copy of the prefab
+        SpawnEnemyWave(3);
     }
 
     // Returns a random position on the island (Y = 0)
@@ -18,5 +18,14 @@ public class SpawnManager : MonoBehaviour
         float spawnPosZ = Random.Range(-_spawnRange, _spawnRange);
         Vector3 randomPos = new Vector3(spawnPosX, 0, spawnPosZ);
         return randomPos;
+    }
+
+    // Spawns a wave of enemies
+    private void SpawnEnemyWave(int enemiesToSpawn)
+    {
+        for (int i = 0; i < enemiesToSpawn; i++)
+        {
+            Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation);
+        }
     }
 }
