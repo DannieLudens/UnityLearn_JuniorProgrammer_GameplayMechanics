@@ -396,7 +396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4438624738799993687, guid: 7b95f9442fd53a04cbaf57565dbb0aea, type: 3}
       propertyPath: m_text
-      value: 'Challenge 4: Soccer Ball '
+      value: 'Challenge 4: Soccer Ball'
       objectReference: {fileID: 0}
     - target: {fileID: 6048795576484961293, guid: 7b95f9442fd53a04cbaf57565dbb0aea, type: 3}
       propertyPath: m_Name
@@ -484,7 +484,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6703694481099233978, guid: 7b95f9442fd53a04cbaf57565dbb0aea, type: 3}
       propertyPath: m_text
-      value: 'Prototype 4: Sumo B vs Bs'
+      value: 'Prototype 4: Sumo cliff battle'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6703694481099233978, guid: 7b95f9442fd53a04cbaf57565dbb0aea, type: 3}
+      propertyPath: m_fontSize
+      value: 51.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 6703694481099233978, guid: 7b95f9442fd53a04cbaf57565dbb0aea, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 51.86
       objectReference: {fileID: 0}
     - target: {fileID: 7035597122253472782, guid: 7b95f9442fd53a04cbaf57565dbb0aea, type: 3}
       propertyPath: m_Name
